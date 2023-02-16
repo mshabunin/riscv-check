@@ -2,13 +2,13 @@
 
 Directory layout should be as follows:
 
-- opencv/
-- opencv_extra/
-- <this_repository>/
-  - workspace/ - directory with opencv builds and caches
-  - scripts/   - directory with built and test scripts
+- _opencv/_ - opencv sources
+- _opencv_extra/_ - opencv test data
+- _<this_repository>/_
+  - _workspace/_ - directory with opencv builds and caches
+  - _scripts/_ - directory with build and test scripts
   - ...
-  - run.sh     - entrypoint script
+  - _run.sh_ - entrypoint script
 
 Steps:
 1. `./run.sh` - will build docker image and run the container
