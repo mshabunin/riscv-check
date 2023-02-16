@@ -1,0 +1,14 @@
+FROM ubuntu:22.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt install -y \
+    cmake \
+    ninja-build \
+    binutils-riscv64-linux-gnu \
+    crossbuild-essential-riscv64 \
+    g++-riscv64-linux-gnu \
+    gcc-riscv64-linux-gnu \
+    qemu-user \
+    ccache
+
+

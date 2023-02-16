@@ -1,0 +1,56 @@
+FROM ubuntu:20.04
+ARG CPUNUM=4
+
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt update && apt install -y \
+    cmake \
+    ninja-build \
+    git \
+    autoconf \
+    automake \
+    autotools-dev \
+    curl \
+    python3 \
+    libmpc-dev \
+    libmpfr-dev \
+    libgmp-dev \
+    gawk \
+    build-essential \
+    bison \
+    flex \
+    texinfo \
+    gperf \
+    libtool \
+    patchutils \
+    bc \
+    zlib1g-dev \
+    libexpat-dev \
+    pkg-config  \
+    libglib2.0-dev
+
+# 📄 Clone repository
+RUN git clone \
+        --depth=1 \
+        https://github.com/T-head-Semi/xuantie-gnu-toolchain
+WORKDIR xuantie-gnu-toolchain
+# workaround missing submodule
+RUN git submodule init || git submodule deinit riscv-libcc-runtime
+RUN git submodule update \
+        --recursive \
+        --jobs ${CPUNUM} \
+        --recommend-shallow \
+        --depth 1
+RUN cd qemu \
+    && git submodule init \
+    && git submodule update \
+        --jobs ${CPUNUM} \
+        --recommend-shallow \
+        --depth 1
+
+# 🛠 Build toolchain
+RUN ./configure --prefix=/opt/riscv --with-arch=rv64gc --with-abi=lp64d
+RUN make -j${CPUNUM} linux          # /usr/local/
+RUN make -j${CPUNUM} build-qemu     # /usr/local/
+RUN make -j${CPUNUM} linux-native   # /usr/local/native/
+
+ENV PATH=/scripts:${PATH}
