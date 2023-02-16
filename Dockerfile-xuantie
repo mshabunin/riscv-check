@@ -48,7 +48,7 @@ RUN cd qemu \
         --depth 1
 
 # 🛠 Build toolchain
-RUN ./configure --prefix=/opt/riscv --with-arch=rv64gc --with-abi=lp64d
+RUN ./configure --with-arch=rv64gc --with-abi=lp64d
 RUN make -j${CPUNUM} linux          # /usr/local/
 RUN make -j${CPUNUM} build-qemu     # /usr/local/
 RUN make -j${CPUNUM} linux-native   # /usr/local/native/
