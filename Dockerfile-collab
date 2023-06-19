@@ -1,0 +1,47 @@
+FROM ubuntu:22.04
+ARG CPUNUM=12
+ARG TAG=2023.06.09
+ARG GCC_TAG=releases/gcc-13.1.0
+
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt update && apt install -y \
+    cmake \
+    ccache \
+    ninja-build \
+    git \
+    autoconf \
+    automake \
+    autotools-dev \
+    curl \
+    python3 \
+    python3-pip \
+    libmpc-dev \
+    libmpfr-dev \
+    libgmp-dev \
+    gawk \
+    build-essential \
+    bison \
+    flex \
+    texinfo \
+    gperf \
+    libtool \
+    patchutils \
+    bc \
+    zlib1g-dev \
+    libexpat-dev \
+    libglib2.0-dev
+
+# 📄 Clone repository
+RUN git clone \
+        --depth=1 \
+        -b ${TAG} \
+        https://github.com/riscv-collab/riscv-gnu-toolchain
+
+WORKDIR riscv-gnu-toolchain
+
+# Use latest GCC for RVV support
+RUN git submodule init && git submodule update
+RUN git -C gcc remote update && git -C gcc fetch origin ${GCC_TAG} && git -C gcc checkout ${GCC_TAG}
+
+RUN ./configure --enable-linux
+RUN make -j${CPUNUM}

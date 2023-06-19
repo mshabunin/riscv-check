@@ -13,5 +13,5 @@ python3 /opencv/modules/ts/misc/run.py \
 popd
 }
 
-test-thead /workspace/build-thead-10 c908v -a
-# test-thead /workspace/build-thead-07 c906fdv -a
+# test-thead /workspace/build-thead-10 c908v -a
+test-thead /workspace/build-thead-07 c906fdv -a
