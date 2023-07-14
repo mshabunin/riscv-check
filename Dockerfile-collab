@@ -44,4 +44,5 @@ RUN git submodule init && git submodule update
 RUN git -C gcc remote update && git -C gcc fetch origin ${GCC_TAG} && git -C gcc checkout ${GCC_TAG}
 
 RUN ./configure --enable-linux
-RUN make -j${CPUNUM}
+RUN make -j${CPUNUM} linux
+RUN make -j${CPUNUM} build-qemu

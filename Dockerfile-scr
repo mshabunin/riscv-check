@@ -1,0 +1,14 @@
+FROM ubuntu:22.04
+ARG CPUNUM=12
+ARG TAG=llvmorg-16.0.6
+ARG GCC_TAG=2023.06.09
+
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt update && apt install -y \
+    cmake \
+    ccache \
+    ninja-build \
+    git \
+    g++ \
+    python3
+

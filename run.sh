@@ -7,15 +7,13 @@ set -ex
 
 mkdir -p workspace
 
+# python3 -m http.server -d download
+
 # ===
 # Run
 
-for platform in xuantie ubuntu22 llvm collab ; do
-# for platform in llvm ; do
-
-tag=opencv-riscv-check-${platform}
-docker build --build-arg CPUNUM=12 -t ${tag} -f Dockerfile-${platform} .
-docker run -it \
+run() {
+    docker run -it \
     -u $(id -u):$(id -g) \
     -v `pwd`/workspace:/workspace \
     -v `pwd`/scripts:/scripts:ro \
@@ -24,6 +22,18 @@ docker run -it \
     -e CCACHE_DIR=/workspace/.ccache \
     -e PATH=/scripts:${PATH} \
     ${tag} \
-    build.sh ${platform}
+    $@
+}
+
+# for platform in xuantie ubuntu22 llvm collab ; do
+# for platform in xuantie-old ; do
+for platform in xuantie ; do
+# for platform in collab ; do
+
+tag=opencv-riscv-check-${platform}
+# docker build --build-arg CPUNUM=12 -t ${tag} -f Dockerfile-${platform} .
+# run build.sh ${platform}
+run test.sh
+# run bash
 
 done

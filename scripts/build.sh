@@ -41,9 +41,16 @@ ninja
 BR=/workspace/build-${platform}
 
 if [ "${platform}" = "xuantie" ] ; then
+build-gcc ${BR}-rvv-07-dbg -DCMAKE_BUILD_TYPE=Debug -DRISCV_RVV_SCALABLE=OFF -DCPU_BASELINE_REQUIRE=RVV -DCPU_RVV_FLAGS_ON=-march=rv64gcv0p7
+build-gcc ${BR}-norvv
 build-gcc ${BR}-rvv-07 -DRISCV_RVV_SCALABLE=OFF -DCPU_BASELINE_REQUIRE=RVV -DCPU_RVV_FLAGS_ON=-march=rv64gcv0p7
-build-gcc ${BR}-rvv-10 -DRISCV_RVV_SCALABLE=OFF -DCPU_BASELINE_REQUIRE=RVV -DCPU_RVV_FLAGS_ON=-march=rv64gcv1p0
+# build-gcc ${BR}-rvv-10 -DRISCV_RVV_SCALABLE=OFF -DCPU_BASELINE_REQUIRE=RVV -DCPU_RVV_FLAGS_ON=-march=rv64gcv1p0
 # build-gcc ${BR}-rvv-scalable -DRISCV_RVV_SCALABLE=ON -DCPU_BASELINE_REQUIRE=RVV -DCPU_RVV_FLAGS_ON=-march=rv64gcv1p0
+fi
+
+if [ "${platform}" = "xuantie-old" ] ; then
+build-gcc ${BR}-norvv -DCMAKE_TOOLCHAIN_FILE=/opencv/platforms/linux/riscv64-071-gcc.toolchain.cmake -DCMAKE_CXX_FLAGS="-march=rv64gc" -DCMAKE_C_FLAGS="-march=rv64gc"
+build-gcc ${BR}-rvv-07 -DCMAKE_TOOLCHAIN_FILE=/opencv/platforms/linux/riscv64-071-gcc.toolchain.cmake
 fi
 
 if [ "${platform}" = "ubuntu22" ] ; then
@@ -57,4 +64,5 @@ fi
 
 if [ "${platform}" = "llvm" ] ; then
 build-clang ${BR}-rvv -DRISCV_RVV_SCALABLE=OFF -DCPU_BASELINE_REQUIRE=RVV -DCPU_RVV_FLAGS_ON=-march=rv64gcv1p0
+build-clang ${BR}-rvv-scalable -DRISCV_RVV_SCALABLE=ON -DCPU_BASELINE_REQUIRE=RVV -DCPU_RVV_FLAGS_ON=-march=rv64gcv1p0
 fi
